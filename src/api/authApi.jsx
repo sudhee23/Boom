@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_BASE_API_URL,
   // withCredentials: true,
 });
 
@@ -43,7 +43,6 @@ export const useSignupUser = () => {
 
 export const loginUser = async (data) => {
   const response = await API.post("/auth/login", data);
-  console.log(response)
   return response.data;
 };
 
@@ -53,6 +52,7 @@ export const useLoginUser = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       localStorage.setItem("token", data.data.token);
+      localStorage.setItem("userId", data.data.userId);
       toast.success("Successfully logged in", {
         description: "Enjoy exploring Boom!",
       });
@@ -71,6 +71,7 @@ export const useLogoutUser = () => {
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     toast.success("Logged out", {
       description: "You have been logged out successfully.",
     });
@@ -169,5 +170,10 @@ export const getUserGifts = async () => {
   const { data } = await API.get("/user/gifts");
   return data;
 };
+
+// export const getMyVideos = async () => {
+//   const {res} = await API.get("/video/my-videos");
+//   return res
+// };
 
 

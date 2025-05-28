@@ -18,7 +18,7 @@ const VideoCard = ({
       handleWatch(video);
     }
   };
-
+  const currentUserId = localStorage.getItem("userId");
   return (
     <div className="bg-white rounded-2xl shadow-md border border-pink-100 p-4 space-y-3">
       {/* Header */}
@@ -72,7 +72,7 @@ const VideoCard = ({
         </div>
 
         {/* Purchase/Watch */}
-        {video.price > 0 && !purchased ? (
+        {video.price > 0 && !purchased && video.creatorId !== currentUserId ? (
           <Button className="bg-pink-500 hover:bg-pink-600 text-white" onClick={() => setSelectedVideo(video)}>
             Buy ₹{video.price}
           </Button>
